@@ -30,7 +30,8 @@ API_TTA = 2
 @app.on_event("startup")
 def load_models_on_startup():
     global STAGE1, STAGE2_HUMAN, STAGE2_AI
-
+    ensure_models()
+    print("Models loaded successfully")
     try:
         # ✅ ADDED: ensure models exist on disk (Railway-safe)
         ensure_models()
