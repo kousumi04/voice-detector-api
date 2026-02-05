@@ -34,9 +34,13 @@ def _resolve_model_path(filename):
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Use bare filenames here; resolve paths inside load_models()
-STAGE1_FILENAME = "stage1_detector_epoch3.pt"
-STAGE2_HUMAN_FILENAME = "stage2_verifier_epoch5.pt"
-STAGE2_AI_FILENAME = "stage2_aasist_epoch3.pt"
+STAGE1_FILENAME = "stage1.pt"
+STAGE2_HUMAN_FILENAME = "stage2_human.pt"
+STAGE2_AI_FILENAME = "stage2_aasist.pt"
+#fixed filenames
+# STAGE1_FILENAME = "stage1.pt"
+# STAGE2_HUMAN_FILENAME = "stage2_human.pt"
+# STAGE2_AI_FILENAME = "stage2_aasist.pt"
 
 SAMPLE_RATE = 16000
 MIN_SECONDS = 5
