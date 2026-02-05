@@ -6,7 +6,7 @@ MODELS = {
     "models/stage2_human.pt": "https://huggingface.co/ritam-05/voice-detector-models/resolve/main/stage2_aasist_epoch3.pt",
     "models/stage2_aasist.pt": "https://huggingface.co/ritam-05/voice-detector-models/resolve/main/stage2_verifier_epoch5.pt",
 }
-
+#fixed
 def ensure_models():
     os.makedirs("models", exist_ok=True)
 
