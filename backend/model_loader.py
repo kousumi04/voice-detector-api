@@ -1,18 +1,27 @@
 import os
-import urllib.request
 
-MODELS = {
-    "models/stage1.pt": "https://huggingface.co/ritam-05/voice-detector-models/resolve/main/stage1_detector_epoch3.pt",
-    "models/stage2_human.pt": "https://huggingface.co/ritam-05/voice-detector-models/resolve/main/stage2_aasist_epoch3.pt",
-    "models/stage2_aasist.pt": "https://huggingface.co/ritam-05/voice-detector-models/resolve/main/stage2_verifier_epoch5.pt",
-}
-#fixed
+
+models_dir = os.path.join(os.path.dirname(__file__), "models")
+
+REQUIRED_MODELS = [
+    "stage1_detector_epoch3.pt",
+    "stage2_aasist_epoch3.pt",
+    "stage2_verifier_epoch5.pt"
+]
+
 def ensure_models():
-    os.makedirs("models", exist_ok=True)
+    """Verify that required models exist locally. Do NOT download."""
+    if not os.path.exists(models_dir):
+        raise FileNotFoundError(f"Models directory not found at {models_dir}")
 
-    for path, url in MODELS.items():
+    missing = []
+    for filename in REQUIRED_MODELS:
+        path = os.path.join(models_dir, filename)
         if not os.path.exists(path):
-            print(f"[MODEL] Downloading {path}")
-            urllib.request.urlretrieve(url, path)
+            missing.append(filename)
         else:
             print(f"[MODEL] Found {path}")
+
+    if missing:
+        raise FileNotFoundError(f"Missing model files in {models_dir}: {missing}. Please download them manually.")
+    print("All models verified locally.")

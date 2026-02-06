@@ -12,31 +12,21 @@ from aasist_backend import AASIST_Backend
 # =========================
 # Fix model paths (use models/ and portable slashes)
 def _resolve_model_path(filename):
-    """
-    Try multiple locations (cwd/models, package_dir/models, raw filename).
-    Returns Path if exists, otherwise raises FileNotFoundError listing checked paths.
-    """
-    candidates = [
-        Path.cwd() / "models" / filename,
-        Path(__file__).parent / "models" / filename,
-        Path(filename)  # as provided (could be absolute)
-    ]
-    checked = []
-    for p in candidates:
-        checked.append(str(p))
-        if p.exists():
-            return p
-    raise FileNotFoundError(
-        f"Model file '{filename}' not found. Checked: " + ", ".join(checked)
-    )
+    base_dir = Path(__file__).parent
+    path = base_dir / "models" / filename
+
+    if path.exists():
+        return path
+
+    raise FileNotFoundError(f"Model file not found: {path}")
 
 # Replace string device with torch.device
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Use bare filenames here; resolve paths inside load_models()
-STAGE1_FILENAME = "stage1.pt"
-STAGE2_HUMAN_FILENAME = "stage2_human.pt"
-STAGE2_AI_FILENAME = "stage2_aasist.pt"
+STAGE1_FILENAME = "stage1_detector_epoch3.pt"
+STAGE2_HUMAN_FILENAME = "stage2_aasist_epoch3.pt"
+STAGE2_AI_FILENAME = "stage2_aasist_epoch3.pt"
 #fixed filenames
 # STAGE1_FILENAME = "stage1.pt"
 # STAGE2_HUMAN_FILENAME = "stage2_human.pt"
@@ -164,12 +154,13 @@ def load_models():
         raise RuntimeError(f"Failed to load stage1 model from {STAGE1_MODEL_PATH}: {e}")
 
     try:
-        s2_human = Stage2Verifier()
+    # Use AASIST-based verifier instead of simple MLP
+        s2_human = Stage2VerifierAI()
         s2_human.load_state_dict(torch.load(STAGE2_HUMAN_PATH, map_location=DEVICE))
         s2_human = s2_human.to(DEVICE)
         s2_human.eval()
     except Exception as e:
-        raise RuntimeError(f"Failed to load stage2 human model from {STAGE2_HUMAN_PATH}: {e}")
+     raise RuntimeError(f"Failed to load stage2 human model from {STAGE2_HUMAN_PATH}: {e}")
 
     s2_ai = None
     if STAGE2_AI_PATH:

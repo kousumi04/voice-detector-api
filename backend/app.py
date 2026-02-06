@@ -33,7 +33,7 @@ def load_models_on_startup():
     global STAGE1, STAGE2_HUMAN, STAGE2_AI
 
     try:
-        # 1️⃣ Ensure model files exist (download if missing)
+        # 1️⃣ Verify model files exist locally
         ensure_models()
 
         # 2️⃣ Lazy import to avoid Railway double-init
