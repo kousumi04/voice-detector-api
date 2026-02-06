@@ -6,7 +6,7 @@ import torchaudio
 import numpy as np
 from transformers import Wav2Vec2Model
 import torch.nn as nn
-from backend.aasist_backend import AASIST_Backend
+from aasist_backend import AASIST_Backend
 # =========================
 # CONFIG
 # =========================
