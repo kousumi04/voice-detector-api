@@ -1,6 +1,5 @@
 
 # VOICE DETECTOR API
-<<<<<<< HEAD
 📂 Data Collection & Dataset Engineering Pipeline
 
 This section describes the complete data preparation workflow used to train the multi-stage AI voice detection system.
